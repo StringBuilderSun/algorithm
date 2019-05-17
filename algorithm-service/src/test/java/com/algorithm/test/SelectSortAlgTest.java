@@ -21,23 +21,29 @@ public class SelectSortAlgTest {
 
     @Before
     public void initData() {
-        sortList = new ArrayList<Integer>(10);
+        sortList = new ArrayList<Integer>(1000);
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            sortList.add(random.nextInt(200));
+        for (int i = 0; i < 1000; i++) {
+            sortList.add(random.nextInt(2000));
         }
     }
 
     @Test
     public void selectSortTest() {
         log.info("排序前的集合:{}",sortList);
+        long startTime=System.currentTimeMillis();
         List<Integer> sortedList = SelectSortAlg.selectSort(sortList);
         log.info("排序后的集合:{}",sortedList);
+        log.info("快速排序耗时:{}",System.currentTimeMillis()-startTime);
+
     }
     @Test
     public void selectSortByFindMinValueTest() {
         log.info("排序前的集合:{}",sortList);
+        long startTime=System.currentTimeMillis();
         List<Integer> sortedList = SelectSortAlg.selectSortByFindMinValue(sortList);
         log.info("排序后的集合:{}",sortedList);
+        log.info("快速排序耗时:{}",System.currentTimeMillis()-startTime);
+
     }
 }

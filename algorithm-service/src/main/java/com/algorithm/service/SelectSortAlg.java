@@ -37,6 +37,7 @@ public class SelectSortAlg {
     /**
      * 选择排序
      * 每次查找最小值,将最小值放入到新集合中
+     * 性能更好一点
      * @param sortList
      * @return
      */
