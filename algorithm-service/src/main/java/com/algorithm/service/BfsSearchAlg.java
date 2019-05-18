@@ -1,5 +1,8 @@
 package com.algorithm.service;
+
+import com.algorithm.model.BfsNode;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 
 /**
@@ -21,34 +24,41 @@ public class BfsSearchAlg {
     //beijing:{"nanjing","shanghai","wuhan"}
     //nanjing:{"shanghai"}
     //suzhou:{"shanghai"}
-    public static boolean bfsSearch(Map<String, List<String>> nodes, String startNode, String endNode) {
+    public static boolean bfsSearch(Map<String, List<String>> nodes, String startNodeValue, String endNodeValue) {
         //队列用于所有节点
-        Queue<String> queue = new ArrayDeque<String>();
-        queue.add(startNode);
+        Queue<BfsNode> queue = new ArrayDeque<BfsNode>();
+        queue.add(new BfsNode(null, startNodeValue));
         //获取当前节点的所有邻居节点
         //所有检查过的元素都放入到该集合中 防止再次检查 导致死循环
         List<String> checkedData = new ArrayList<String>();
         while (queue.size() != 0) {
-            String node = queue.poll();
+            BfsNode bfsNode = queue.poll();
             //当节点没有被检查过的时候 才会再次检查 防止无限循环
-            if (!checkedData.contains(node)) {
-                checkedData.add(node);
-                if (suitCase(node, endNode)) {
-                    log.info("找到了从:{} 到 {} 的路径", startNode, endNode);
+            if (!checkedData.contains(bfsNode.getNodeValue())) {
+                checkedData.add(bfsNode.getNodeValue());
+                if (suitCase(bfsNode.getNodeValue(), endNodeValue)) {
+                    log.info("找到了从:{} 到 {} 的路径", startNodeValue, endNodeValue);
+                    log.info("最优路径为:{}",bfsNode.toString());
                     return true;
                 } else {
-                    addNodes(queue, nodes.get(node));
+                    addNodes(queue, nodes.get(bfsNode.getNodeValue()), bfsNode);
                 }
             }
         }
         return false;
     }
 
-
-    private static Queue<String> addNodes(Queue<String> queue, List<String> nextNodes) {
+    /**
+     * 将邻居node添加到 栈中
+     * @param queue
+     * @param nextNodes
+     * @param parentBfsNode
+     * @return
+     */
+    private static Queue<BfsNode> addNodes(Queue<BfsNode> queue, List<String> nextNodes, BfsNode parentBfsNode) {
         if (nextNodes != null) {
-            for (String node : nextNodes) {
-                queue.add(node);
+            for (String nodeValue : nextNodes) {
+                queue.add(new BfsNode(parentBfsNode, nodeValue));
             }
         }
         return queue;
@@ -65,5 +75,25 @@ public class BfsSearchAlg {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 打印路径
+     *
+     * @return
+     */
+    private static String printWay(BfsNode bfsNode, String startNode) {
+        StringBuilder stringBuilder = new StringBuilder(startNode);
+        if (bfsNode != null) {
+            while (bfsNode.getParentBfsNode() != null) {
+                bfsNode = bfsNode.getParentBfsNode();
+            }
+            while (bfsNode.getParentBfsNode() == null) {
+                stringBuilder.append("->").append(bfsNode.getNodeValue());
+                bfsNode = bfsNode.getParentBfsNode();
+            }
+        }
+        return stringBuilder.toString();
+
     }
 }

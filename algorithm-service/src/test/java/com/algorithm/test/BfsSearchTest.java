@@ -20,7 +20,7 @@ public class BfsSearchTest {
         dataMap=new HashMap<String, List<String>>();
         dataMap.put("zhengzhou", Arrays.asList("wuhan","hefei","beijing"));
         dataMap.put("wuhan", Arrays.asList("nanjing","suzhou","beijing"));
-        dataMap.put("hefei", Arrays.asList("nanjing","shanghai"));
+        dataMap.put("hefei", Arrays.asList("nanjing","hangzhou"));
         dataMap.put("beijing", Arrays.asList("nanjing","shanghai","wuhan"));
         dataMap.put("nanjing", Arrays.asList("shanghai"));
         dataMap.put("suzhou", Arrays.asList("shanghai"));
